@@ -1,6 +1,6 @@
 # dbt
-A tool for transforming data within a data warehouse, responsible for the "T" in ELT (Extract, Load, Transform).
-Data warehouses include modern data platforms such as Snowflake, Redshift, BigQuery, and Databricks.
+A tool for transforming data within a data warehouse, responsible for the "T" in ELT (Extract, Load, Transform). Data warehouses include modern data platforms such as Snowflake, Redshift, BigQuery, and Databricks.
+![image](https://github.com/user-attachments/assets/0401c149-0110-484e-b356-c18d2afe4fd0)
 
 # Why Choose dbt?
 * **Open Source and Cost-Effective:** dbt is free to use, making it accessible for teams of all sizes.
@@ -29,7 +29,9 @@ Traditional Data Team
 Modern Data Team
 * **Data Engineer:** Focuses on extracting and loading raw data into the DWH and larger Data Infrastructure (EL).
 * **Analytics Engineer:** Bridges the gap between data engineering and data analysis, responsible for transforming raw data into a format that is accessible and useful for analysis, ensuring data quality and consistency. Responsible for the Transformation of the raw data up to the BI layers (T).
-* **Data Analyst:**  focus on insight and dashboard work using the transformed data.
+* **Data Analyst:** Focus on insight and dashboard work using the transformed data.
+
+![image](https://github.com/user-attachments/assets/7abae7ab-98be-40e9-b899-8fc9bedb09db)
 
 Note: At a small company, a data team of one may own all three of these roles and responsibilities. As your team grows, the lines between these roles will remain blurry.
 
@@ -44,6 +46,8 @@ Note: At a small company, a data team of one may own all three of these roles an
 * **Business Intelligence Tools:** Popular BI tools such as Tableau, Looker, and Mode that allow users to create interactive dashboards and reports, enabling data-driven decision-making across the organization.
 * **Machine Learning Models:** Utilization of Jupyter Notebooks and Python scripts for developing and deploying machine learning models, allowing data scientists to analyze data, build predictive models, and derive insights from large datasets.
 * **Operational Analytics:** Focus on providing real-time data insights and reporting capabilities, enabling organizations to monitor key performance indicators (KPIs) and make informed decisions based on the latest data trends.
+
+![image](https://github.com/user-attachments/assets/bff5df8a-7b15-457f-a423-f2cd4194c86f)
 
 # dbt components
 * **DAGs (Directed Acyclic Graphs):**
@@ -62,6 +66,8 @@ Note: At a small company, a data team of one may own all three of these roles an
 * **Tests:**
   - Configuration of YML files is required to set up tests for data quality.
   - Tests help ensure that the transformations produce the expected results and maintain data integrity.
+  ![image](https://github.com/user-attachments/assets/1d65c819-8599-4e12-9db4-a2d3a2d36167)
+
 * **Documentation:**
   - dbt allows for automatic generation of documentation for data models.
   - Documentation can be viewed through a dedicated site, providing easy access to model descriptions and usage.
