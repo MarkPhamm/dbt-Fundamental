@@ -97,6 +97,8 @@ Note: At a small company, a data team of one may own all three of these roles an
 * When `dbt run` is executing, dbt is wrapping the select statement in the correct DDL/DML to build that model as a table/view. If that model already exists in the data warehouse, dbt will automatically drop that table or view before building the new database object. *Note: If you are on BigQuery, you may need to run `dbt run --full-refresh` for this to take effect.
 * The DDL/DML that is being run to build each model can be viewed in the logs through the cloud interface or the target folder.
 
+![image](https://github.com/user-attachments/assets/3c557974-1639-4a6d-8162-b4acb483521e)
+
 # Modularity
 * We could build each of our final models in a single model as we did with `dim_customers`, however with dbt we can create our final data products using modularity.
 * Modularity is the degree to which a system's components may be separated and recombined, often with the benefit of flexibility and variety in use.
@@ -109,6 +111,8 @@ Note: At a small company, a data team of one may own all three of these roles an
   - By using `ref`, you can easily manage changes in your models. If a model is updated, dbt automatically tracks these changes and updates any dependent models accordingly, maintaining data integrity throughout the transformation process.
   - The `ref` function also helps in generating the DAG (Directed Acyclic Graph) for your dbt project, providing a clear visualization of how models are interconnected.
 
+![image](https://github.com/user-attachments/assets/c461d5be-0352-4693-9344-a39656e93a2a)
+
 # Naming Convention
 * Sources (`src`) refer to the raw table data that have been built in the warehouse through a loading process. (We will cover configuring Sources in the Sources module)
 * Staging (`stg`) refers to models that are built directly on top of sources. These have a one-to-one relationship with sources tables. These are used for very light transformations that shape the data into what you want it to be. These models are used to clean and standardize the data before transforming data downstream. Note: These are typically materialized as views.
@@ -119,6 +123,8 @@ Note: At a small company, a data team of one may own all three of these roles an
 Project Organization
 * **Marts folder**: All intermediate, fact, and dimension models can be stored here. Further subfolders can be used to separate data by business function (e.g. marketing, finance)
 * **Staging folder****: All staging models and source configurations can be stored here. Further subfolders can be used to separate data by data source (e.g. Stripe, Segment, Salesforce). (We will cover configuring Sources in the Sources module)
+
+![image](https://github.com/user-attachments/assets/e14b976f-6524-47ea-81e5-ec497b7b1368)
 
 # dbt project YAML
 * **Project Name**: A unique identifier for your dbt project, following naming conventions of lowercase characters and underscores. It should reflect the project's purpose.
