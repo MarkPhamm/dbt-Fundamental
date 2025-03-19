@@ -84,3 +84,9 @@ Note: At a small company, a data team of one may own all three of these roles an
 * **Deployment:**
   - Set up different environments (e.g., development, production) for managing dbt projects.
   - Jobs can be scheduled to run daily, executing a set of commands at specified intervals to keep data up-to-date.
+
+# Data Modeling and Models in dbt
+* **Data modeling:**: involves transforming raw data into a structured format. Data Engineers (DE) are responsible for managing the raw data, while dbt focuses on the transformation process. 
+* **dbt models:** In dbt, models are essentially SQL statements that represent modular pieces of logic, gradually converting raw data into the final transformed datasets. Each model corresponds one-to-one with a table or view in the Data Warehouse (DWH). There is no need to understand the Data Definition Language (DDL) or Data Manipulation Language (DML); instead, you only need to work with the SQL and YAML files associated with the model. This allows you to concentrate on the business logic within the SQL, while dbt handles the materialization of the models.
+
+# Modularity 
