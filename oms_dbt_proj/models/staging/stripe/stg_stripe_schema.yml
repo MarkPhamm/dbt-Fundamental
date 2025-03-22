@@ -1,0 +1,44 @@
+version: 2
+
+models:
+- name: stg_stripe__payments
+  description: Staged payment data from our Stripe APIs
+  columns:
+  - name: payment_id
+    description: Primary key of the payment
+    tests:
+    - unique
+    - not_null
+  - name: order_id
+    description: Foreign key to stg_jaffle_shop__orders.order_id
+    tests:
+    - not_null
+    - relationships:
+        field: order_id
+        to: ref('stg_jaffle_shop__orders')
+  - name: payment_method
+    description: '{{ doc("payment_method") }}'
+    tests:
+    - not_null
+    - accepted_values:
+        values:
+        - "credit_card"
+        - "coupon"
+        - "bank_transfer"
+        - "gift_card"
+  - name: status
+    description: Status of the order (success or fail)
+    tests:
+    - not_null
+    - accepted_values:
+        values:
+        - "success"
+        - "fail"
+  - name: amount
+    description: the amount user paid or fail to pay for payment_id
+    tests:
+    - not_null
+  - name: created_at
+    description: time stamp for the last batch
+    tests:
+    - not_null
