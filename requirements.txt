@@ -3,3 +3,4 @@ dbt-redshift
 dbt-bigquery
 dbt-databricks
 dbt-postgres
+ipykernel
