@@ -1,3 +1,66 @@
+# common dbt Commands
+## 1. Running and Building Models
+| Command                      | Description |
+|------------------------------|-------------|
+| `dbt run`                    | Executes models by running SQL queries and materializing results in the data warehouse. |
+| `dbt build`                  | Runs `dbt run`, `dbt test`, and `dbt source freshness` in a single command. |
+| `dbt run --select <model>`   | Runs a specific model instead of all models in the project. |
+| `dbt run --exclude <model>`  | Runs all models except the specified one. |
+| `dbt run --full-refresh`     | Forces a full refresh for incremental models. |
+
+## 2. Testing and Validating Data
+| Command                      | Description |
+|------------------------------|-------------|
+| `dbt test`                   | Runs all tests on models to validate data integrity. |
+| `dbt test --data`            | Runs only data tests (e.g., uniqueness, referential integrity). |
+| `dbt test --schema`          | Runs only schema tests (e.g., constraints on table structures). |
+| `dbt test --select <model>`  | Runs tests only on a specific model. |
+
+## 3. Data Freshness and Snapshots
+| Command                      | Description |
+|------------------------------|-------------|
+| `dbt source freshness`       | Checks the freshness of source data by comparing last updated timestamps. |
+| `dbt source snapshot-freshness` | Alias for `dbt source freshness`, checking source freshness. |
+| `dbt snapshot`               | Captures changes in slowly changing dimensions (SCD) over time. |
+| `dbt snapshot --select <snapshot>` | Runs a specific snapshot instead of all snapshots. |
+
+## 4. Documentation and Exploration
+| Command                      | Description |
+|------------------------------|-------------|
+| `dbt docs generate`          | Generates documentation, including model descriptions and lineage graphs. |
+| `dbt docs serve`             | Starts a local web server to serve dbt-generated documentation. |
+| `dbt ls`                     | Lists all models, tests, sources, and other resources in the project. |
+| `dbt show --select <model>`  | Displays the compiled SQL of a specific model without executing it. |
+
+## 5. Compilation and Debugging
+| Command                      | Description |
+|------------------------------|-------------|
+| `dbt compile`                | Compiles dbt models into raw SQL files without executing them. |
+| `dbt debug`                  | Tests the connection to the data warehouse and verifies the dbt setup. |
+| `dbt debug --config-dir`     | Checks the configuration directory setup for dbt. |
+| `dbt debug --profiles-dir`   | Checks if the profiles directory is set up correctly. |
+| `dbt debug --target <profile>` | Tests a specific dbt target profile connection. |
+| `dbt parse`                  | Parses the dbt project files to check for errors and validate structure. |
+
+## 6. Managing Dependencies and Cleaning Up
+| Command                      | Description |
+|------------------------------|-------------|
+| `dbt deps`                   | Installs dependencies listed in the `packages.yml` file. |
+| `dbt clean`                  | Removes temporary files and the `dbt_modules` and `target` directories. |
+
+## 7. Seeding and Running Operations
+| Command                      | Description |
+|------------------------------|-------------|
+| `dbt seed`                   | Loads CSV files from the `data` directory into the data warehouse as tables. |
+| `dbt seed --full-refresh`    | Reloads seed files into the database, even if they exist. |
+| `dbt run-operation`          | Executes macros defined in the project. |
+
+## 8. Project Initialization and Setup
+| Command                      | Description |
+|------------------------------|-------------|
+| `dbt init`                   | Creates a new dbt project with the necessary directory structure and files. |
+
+
 # dbt
 A tool for transforming data within a data warehouse, responsible for the "T" in ELT (Extract, Load, Transform). Data warehouses include modern data platforms such as Snowflake, Redshift, BigQuery, and Databricks.
 ![image](https://github.com/user-attachments/assets/0401c149-0110-484e-b356-c18d2afe4fd0)
