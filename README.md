@@ -7,6 +7,8 @@
 | `dbt run --select <model>`   | Runs a specific model instead of all models in the project. |
 | `dbt run --exclude <model>`  | Runs all models except the specified one. |
 | `dbt run --full-refresh`     | Forces a full refresh for incremental models. |
+| `dbt run --select state:modified+` | Runs only the models that have been modified since the last run. |
+| `dbt retry`                  | Retries failed models a specified number of times from the last point of failure. |
 
 ## 2. Testing and Validating Data
 | Command                      | Description |
@@ -461,3 +463,25 @@ The results of a particular job run can be reviewed **as the job completes** and
   * ⛔️ Seeds should not be the process for uploading data that changes frequently
 * Seeds are useful for loading country codes, employee emails, or employee account IDs
   * Note: If you have a rapidly growing or large company, this may be better addressed through an orchestrated loading solution.
+
+# State
+dbt by design is **idempotent** and **stateless** by default
+* **Idempotent:** When you execute a dbt build command multiple times with the same underlying data sources, you get the same results.
+* **Stateless:** Each dbt build command runs independently of the results of the previous build, i.e. the results of the previous build do not inform / impact future runs
+
+
+## State  
+dbt does store **"state"** —a detailed, point-in-time view of project resources (also referred to as nodes), database objects, and invocation results—in the form of its artifacts.  
+
+Concretely, dbt will store the following each time you execute `dbt build`:  
+- `manifest.json` - state of the resource files (models, sources, tests, etc.) in your project  
+- `run_results.json` - state of the results of a command that was run  
+
+What can we do with state? Two common use cases:  
+1. Building only new or modified models  
+2. Troubleshooting failures in the DAG  
+
+Look at the previous run, see what's change in the state and run only what's modify
+```bash
+dbt run--select state:modified+
+```
