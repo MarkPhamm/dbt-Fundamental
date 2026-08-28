@@ -1,0 +1,30 @@
+# Project profile: local DuckDB by default, Snowflake when you pass --target snowflake.
+# Run from this directory with: dbt debug --profiles-dir .
+#
+# DuckDB expects duckdb/raw.duckdb to exist first:
+#   python ../duckdb/load_raw.py
+
+jaffle_shop:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: ../duckdb/analytics.duckdb
+      schema: analytics
+      threads: 4
+      attach:
+        - path: ../duckdb/raw.duckdb
+          alias: raw
+          read_only: true
+
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE', 'ACCOUNTADMIN') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE', 'analytics') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'transforming') }}"
+      schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'dbt') }}"
+      threads: 4
+      client_session_keep_alive: false

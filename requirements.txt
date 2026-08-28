@@ -1,6 +1,4 @@
-dbt-snowflake
-dbt-redshift
-dbt-bigquery
-dbt-databricks
-dbt-postgres
+dbt-core>=1.10,<2
+dbt-snowflake>=1.10,<2
+dbt-duckdb>=1.10,<2
 ipykernel
