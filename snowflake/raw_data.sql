@@ -1,3 +1,5 @@
+-- Snowflake source load. For local DuckDB, see duckdb/raw_data.sql and duckdb/load_raw.py.
+
 create warehouse transforming;
 create database raw;
 create database analytics;

@@ -1,3 +1,19 @@
+# Snowflake and DuckDB
+
+This is the same dbt project with two targets in `oms_dbt_proj/profiles.yml`. Models, sources, and tests are shared; only the target changes.
+
+- **DuckDB** (`--target duckdb`) — default. Runs locally with no warehouse login. Load raw data with `python duckdb/load_raw.py`, then models land in `duckdb/analytics.duckdb`.
+- **Snowflake** (`--target snowflake`) — same models and sources. Load raw data with `snowflake/raw_data.sql`, then set `SNOWFLAKE_ACCOUNT`, `SNOWFLAKE_USER`, and `SNOWFLAKE_PASSWORD`.
+
+From `oms_dbt_proj`:
+
+```sh
+dbt build --profiles-dir . --target duckdb
+dbt build --profiles-dir . --target snowflake
+```
+
+Setup details are in `oms_dbt_proj/README.md`.
+
 # common dbt Commands
 ## 1. Running and Building Models
 | Command                      | Description |
