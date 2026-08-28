@@ -14,6 +14,25 @@ dbt build --profiles-dir . --target snowflake
 
 Setup details are in `oms_dbt_proj/README.md`.
 
+## DuckDB UI
+
+After a local DuckDB build, launch the UI from the repo root to query models in the browser:
+
+```sh
+python duckdb/ui.py
+```
+
+That opens http://localhost:4213 against `duckdb/analytics.duckdb` and attaches `duckdb/raw.duckdb` as `raw`. Models use a 3-part name (`database.schema.table`) because the DuckDB file and the dbt schema are both called `analytics`:
+
+```sql
+select * from analytics.analytics.dim_customers;
+select * from analytics.analytics.fct_orders;
+select * from raw.jaffle_shop.customers;
+```
+
+Keep the process running while you use the UI. Press Ctrl+C to stop it.
+
+
 # common dbt Commands
 ## 1. Running and Building Models
 | Command                      | Description |

@@ -36,6 +36,32 @@ DuckDB files:
 - `duckdb/raw.duckdb` — source tables (attached as database `raw`)
 - `duckdb/analytics.duckdb` — dbt models (created on the first run)
 
+## DuckDB UI
+
+After `dbt build --profiles-dir . --target duckdb`, launch the local DuckDB UI from the repo root:
+
+```sh
+python duckdb/ui.py
+```
+
+That opens http://localhost:4213 against `duckdb/analytics.duckdb` and attaches `duckdb/raw.duckdb` as `raw`. Models use a 3-part name (`database.schema.table`) because the DuckDB file and the dbt schema are both called `analytics`:
+
+```sql
+select * from analytics.analytics.dim_customers;
+select * from analytics.analytics.fct_orders;
+select * from analytics.analytics.stg_jaffle_shop__orders;
+select * from raw.jaffle_shop.customers;
+select * from raw.stripe.payment;
+```
+
+Keep the process running while you use the UI. Press Ctrl+C to stop it.
+
+If you have the DuckDB CLI installed, this is equivalent:
+
+```sh
+duckdb duckdb/analytics.duckdb -cmd "ATTACH 'duckdb/raw.duckdb' AS raw (READ_ONLY);" -ui
+```
+
 ## Snowflake
 
 Load sources once with `snowflake/raw_data.sql`, then set:
