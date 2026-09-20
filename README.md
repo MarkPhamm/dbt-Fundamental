@@ -1,4 +1,4 @@
-# Snowflake and DuckDB
+# dbt Fundamentals
 
 ![Demo: one dbt project, two warehouses, and lineage traced with zero warehouse connection](docs/assets/brag.gif)
 
