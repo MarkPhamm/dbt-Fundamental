@@ -1,5 +1,7 @@
 # Snowflake and DuckDB
 
+![Demo: one dbt project, two warehouses, and lineage traced with zero warehouse connection](docs/assets/brag.gif)
+
 This is the same dbt project with two targets in `oms_dbt_proj/profiles.yml`. Models, sources, and tests are shared; only the target changes.
 
 - **DuckDB** (`--target duckdb`) — default. Runs locally with no warehouse login. Load raw data with `python duckdb/load_raw.py`, then models land in `duckdb/analytics.duckdb`.

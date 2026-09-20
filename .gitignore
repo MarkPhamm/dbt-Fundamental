@@ -3,3 +3,4 @@
 /.cursor
 *.duckdb
 *.duckdb.wal
+/brag-output
