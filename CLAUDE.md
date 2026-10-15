@@ -34,7 +34,12 @@ There is no linter. CI (`.github/workflows/dbt.yml`) runs `load_raw.py` then `db
 - **Layers:** `models/staging/<source>/` holds `stg_<source>__<entity>` views (rename and cast only, one per source table, with `<dir>_source.yml`, `<dir>_schema.yml`, `<dir>_doc.md` beside them). `models/marts/<domain>/` holds tables (`fct_orders` in finance, `dim_customers` in marketing) built only from `ref()` to staging or other marts. Materializations are set per folder in `dbt_project.yml`.
 - **DAG:** `stg_jaffle_shop__orders` + `stg_stripe__payments` → `fct_orders` → `dim_customers` (+ `stg_jaffle_shop__customers`).
 - **Business rules:** payment `amount` is converted from cents to dollars in staging via the `cents_to_dollars` macro. `fct_orders.amount` sums only `status = 'success'` payments; a unit test in `finance_schema.yml` guards this.
-- **Learning chapters:** the root README's "Next steps after Fundamentals" section walks through generic tests, macros/codegen, unit tests/CI, and seeds/analyses/snapshots. Each chapter maps to files in this project; keep the README commands and "Check:" lines true when changing them.
+- **Learner path (root README):** the audience is beginners taking dbt Learn's Fundamentals course, and they read only the root README. Terms:
+  - **Module:** a dbt Fundamentals course unit (Models, Sources, Tests, Documentation, Deployment), one row of the "Follow the dbt Fundamentals course" map.
+  - **Chapter:** a numbered section of "Next steps after Fundamentals", covering material beyond the course.
+  - **Exercise:** a **Try it** task at the end of a module or chapter, with its answer in a `<details>` block. Exercises are not applied to the project. Apply each answer exactly as written and confirm its stated result before changing it.
+  Keep README commands and "Check:" lines true when changing the files they point to.
+- **Codespaces:** `.devcontainer/devcontainer.json` installs requirements, loads raw data and runs `dbt deps`, but deliberately not `dbt build` (the learner's first step).
 - **Lineage:** `qlineage` (from `requirements.txt`) reads lineage offline. Run `dbt compile --profiles-dir .` first so it can use `target/manifest.json`. The root README covers its flags.
 
 ## Gotchas
