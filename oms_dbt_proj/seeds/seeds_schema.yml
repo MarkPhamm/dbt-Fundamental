@@ -1,0 +1,11 @@
+version: 2
+
+seeds:
+- name: payment_methods
+  description: Display label for each Stripe payment_method code.
+  columns:
+  - name: payment_method
+    description: Code as it appears in stg_stripe__payments.payment_method
+    tests:
+    - unique
+    - not_null

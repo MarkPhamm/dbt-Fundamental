@@ -1,0 +1,8 @@
+snapshots:
+- name: snap_customers
+  description: Type 2 history of raw customers. Customers has no updated_at column, so the check strategy compares every column.
+  relation: source('jaffle_shop', 'customers')
+  config:
+    unique_key: id
+    strategy: check
+    check_cols: all

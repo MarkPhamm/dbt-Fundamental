@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: One record order
+    columns:
+      - name: order_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_jaffle_shop__customers')
+              field: customer_id
+      - name: order_date
+        description: the order_date of the order_id
+        tests: 
+          - not_null 
+      - name: amount
+        description: the amount customer spent on a success payment
+        tests:
+          - not_null
+
+unit_tests:
+  - name: test_fct_orders_counts_only_successful_payments
+    description: Failed payments are ignored, and an order with no payments gets amount 0.
+    model: fct_orders
+    given:
+      - input: ref('stg_jaffle_shop__orders')
+        rows:
+          - {order_id: 1, customer_id: 10, order_date: 2018-01-01, status: completed}
+          - {order_id: 2, customer_id: 20, order_date: 2018-01-02, status: placed}
+      - input: ref('stg_stripe__payments')
+        rows:
+          - {order_id: 1, status: success, amount: 10}
+          - {order_id: 1, status: fail, amount: 5}
+    expect:
+      rows:
+        - {order_id: 1, customer_id: 10, order_date: 2018-01-01, amount: 10}
+        - {order_id: 2, customer_id: 20, order_date: 2018-01-02, amount: 0}
