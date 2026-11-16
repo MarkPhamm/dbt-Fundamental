@@ -1,0 +1,17 @@
+{
+  "name": "dbt Fundamentals",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  // Same steps as .github/workflows/dbt.yml, minus the build: the learner runs the first `dbt build`.
+  "postCreateCommand": "pip install -r requirements.txt && python duckdb/load_raw.py && cd oms_dbt_proj && dbt deps --profiles-dir .",
+  "forwardPorts": [4213, 8080],
+  "portsAttributes": {
+    "4213": { "label": "DuckDB UI" },
+    "8080": { "label": "dbt docs" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python"],
+      "settings": { "terminal.integrated.cwd": "${containerWorkspaceFolder}/oms_dbt_proj" }
+    }
+  }
+}
