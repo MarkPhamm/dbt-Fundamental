@@ -14,26 +14,29 @@ models:
     tests:
     - not_null
     - relationships:
-        field: order_id
-        to: ref('stg_jaffle_shop__orders')
+        arguments:
+          field: order_id
+          to: ref('stg_jaffle_shop__orders')
   - name: payment_method
     description: '{{ doc("payment_method") }}'
     tests:
     - not_null
     - accepted_values:
-        values:
-        - "credit_card"
-        - "coupon"
-        - "bank_transfer"
-        - "gift_card"
+        arguments:
+          values:
+          - "credit_card"
+          - "coupon"
+          - "bank_transfer"
+          - "gift_card"
   - name: status
     description: Status of the order (success or fail)
     tests:
     - not_null
     - accepted_values:
-        values:
-        - "success"
-        - "fail"
+        arguments:
+          values:
+          - "success"
+          - "fail"
   - name: amount
     description: the amount user paid or fail to pay for payment_id
     tests:
