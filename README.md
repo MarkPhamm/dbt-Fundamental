@@ -114,6 +114,60 @@ npx @mermaid-js/mermaid-cli -i lineage.mmd -o lineage.png -b white -s 3
 | `--version` | Print the installed version (added in 0.2.2) |
 
 
+## Next steps after Fundamentals
+
+Four short chapters, in the order dbt Learn teaches them. Each one runs offline on DuckDB. Run the commands from `oms_dbt_proj`, after a first `dbt build --profiles-dir .`.
+
+### 1. Generic tests on a mart
+
+`models/marts/finance/finance_schema.yml` declares `unique`, `not_null` and `relationships` tests on `fct_orders`. A schema file only counts if it ends in `.yml`.
+
+```sh
+dbt test --profiles-dir . -s fct_orders
+```
+
+Check: 6 data tests pass.
+
+### 2. Macros, Jinja and packages
+
+`macros/cents_to_dollars.sql` replaces the hand-written `amount / 100` in `stg_stripe__payments`. The `codegen` package (from `packages.yml`) writes model YAML for you.
+
+```sh
+dbt compile --profiles-dir . -s stg_stripe__payments
+dbt run-operation generate_model_yaml --profiles-dir . --args '{"model_names": ["fct_orders"]}'
+```
+
+Check: `target/compiled/.../stg_stripe__payments.sql` contains `round(amount / 100, 2)`, and the second command prints a YAML block for `fct_orders`.
+
+### 3. Unit tests and CI
+
+Data tests check the data you have. Unit tests check the logic against rows you write. `test_fct_orders_counts_only_successful_payments` in `finance_schema.yml` proves failed payments are ignored.
+
+```sh
+dbt test --profiles-dir . -s test_type:unit
+```
+
+Check: 1 unit test passes. Then change `case when status = 'success' then amount end` to `amount` in `fct_orders.sql` and run it again: it fails. Revert the change.
+
+`.github/workflows/dbt.yml` runs `dbt build` on DuckDB for every pull request, so forks get CI with no secrets.
+
+### 4. Seeds, analyses and snapshots
+
+- `seeds/payment_methods.csv` is small reference data that lives in git and loads with `dbt seed`.
+- `analyses/revenue_by_payment_method.sql` joins it to payments. Analyses compile but never build.
+- `snapshots/snap_customers.yml` keeps Type 2 history of raw customers.
+
+```sh
+dbt compile --profiles-dir . -s revenue_by_payment_method
+dbt snapshot --profiles-dir .
+python -c "import duckdb; duckdb.connect('../duckdb/raw.duckdb').execute(\"update jaffle_shop.customers set last_name = 'Q.' where id = 1\")"
+dbt snapshot --profiles-dir .
+dbt show --profiles-dir . --inline "select id, last_name, dbt_valid_from, dbt_valid_to from {{ ref('snap_customers') }} where id = 1"
+```
+
+Check: customer 1 has two rows. The `P.` row has a `dbt_valid_to`, and the `Q.` row has none. Run `python duckdb/load_raw.py` from the repo root to reset the raw data.
+
+
 # common dbt Commands
 ## 1. Running and Building Models
 | Command                      | Description |
