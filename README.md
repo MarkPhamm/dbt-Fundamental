@@ -2,6 +2,10 @@
 
 ![Demo: one dbt project, two warehouses, and lineage traced with zero warehouse connection](docs/assets/brag.gif)
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/MarkPhamm/dbt-Fundamental?quickstart=1)
+
+Open in Codespaces to skip local setup: Python, dependencies and raw data are installed for you, so you can run `dbt build --profiles-dir .` from `oms_dbt_proj` right away. Local setup below still works.
+
 This is the same dbt project with two targets in `oms_dbt_proj/profiles.yml`. Models, sources, and tests are shared; only the target changes.
 
 - **DuckDB** (`--target duckdb`) — default. Runs locally with no warehouse login. Load raw data with `python duckdb/load_raw.py`, then models land in `duckdb/analytics.duckdb`.
@@ -15,6 +19,143 @@ dbt build --profiles-dir . --target snowflake
 ```
 
 Setup details are in `oms_dbt_proj/README.md`.
+
+## Follow the dbt Fundamentals course
+
+Use this project alongside dbt Learn's free [dbt Fundamentals](https://learn.getdbt.com/courses/dbt-fundamentals) course. The course uses the same jaffle_shop data, so each module maps to files you can open and run here. Run `dbt build --profiles-dir .` once from `oms_dbt_proj` first.
+
+| Module | Open | Run | Notes |
+|---|---|---|---|
+| Models | `models/staging/`, `models/marts/` | `dbt run --profiles-dir .` | [Dbt models](#dbt-models) |
+| Sources | `models/staging/*/*_source.yml` | `dbt source freshness --profiles-dir .` | [Sources](#sources-sourcesyml) |
+| Tests | `models/**/*_schema.yml`, `tests/` | `dbt test --profiles-dir .` | [Testing](#testing) |
+| Documentation | `models/**/*_doc.md` | `dbt docs generate --profiles-dir .` then `dbt docs serve --profiles-dir .` | [Documentation](#documentation-1) |
+| Deployment | `.github/workflows/dbt.yml` | runs on every pull request | [Development vs. Deployment](#development-vs-deployment) |
+
+Each module has a **Try it** exercise. Exercises edit the project. To undo one, run `git checkout -- oms_dbt_proj` from the repo root and delete any files the answer created.
+
+### Models
+
+Staging models rename raw columns; marts join them with `ref()`. `dim_customers` builds on `fct_orders`, which builds on two staging models.
+
+**Try it:** add a `full_name` column (first name, a space, last name) to `dim_customers`, then run only that model.
+
+<details>
+<summary>Answer</summary>
+
+In `models/marts/marketing/dim_customers.sql`, add this line to the `final` CTE, under `customers.last_name,`:
+
+```sql
+        customers.first_name || ' ' || customers.last_name as full_name,
+```
+
+```sh
+dbt run --profiles-dir . -s dim_customers
+dbt show --profiles-dir . -s dim_customers --limit 2
+```
+
+The output has a `full_name` column, for example `Michael P.`.
+</details>
+
+### Sources
+
+`{{ source('jaffle_shop', 'orders') }}` points at a raw table declared in `stg_jaffle_shop_source.yml`. That file also sets freshness rules on `_etl_loaded_at`, the time `load_raw.py` loaded the data.
+
+**Try it:** make orders freshness warn after 1 minute, wait 1 minute, and run the freshness check.
+
+<details>
+<summary>Answer</summary>
+
+In `models/staging/jaffle_shop/stg_jaffle_shop_source.yml`, change the orders rule to:
+
+```yaml
+      warn_after: { count: 1, period: minute }
+```
+
+```sh
+dbt source freshness --profiles-dir . -s source:jaffle_shop.orders
+```
+
+The result is `WARN freshness of jaffle_shop.orders`, because the data is older than 1 minute but younger than the 24-hour `error_after`.
+</details>
+
+### Tests
+
+Generic tests (`unique`, `not_null`, `accepted_values`, `relationships`) live in the `*_schema.yml` files. Singular tests are SQL files in `tests/` that return the rows that break a rule.
+
+Course videos may show `accepted_values` and `relationships` options directly under the test name. dbt 1.10+ expects them under `arguments:`, as this project does.
+
+**Try it:** write a singular test that fails if any customer in `dim_customers` has a negative `number_of_orders`.
+
+<details>
+<summary>Answer</summary>
+
+Create `tests/assert_dim_customers_orders_not_negative.sql`:
+
+```sql
+select * from {{ ref('dim_customers') }}
+where number_of_orders < 0
+```
+
+```sh
+dbt test --profiles-dir . -s assert_dim_customers_orders_not_negative
+```
+
+The test passes: it returns 0 rows.
+</details>
+
+### Documentation
+
+Descriptions in `*_schema.yml` become the docs site. Longer text lives in `{% docs %}` blocks in `*_doc.md` files, used with `'{{ doc("name") }}'`. See `order_status` in `stg_jaffle_shop_doc.md`.
+
+**Try it:** write a `lifetime_value` doc block and use it for `dim_customers.lifetime_value`.
+
+<details>
+<summary>Answer</summary>
+
+Create `models/marts/marketing/marketing_doc.md`:
+
+```
+{% docs lifetime_value %}
+Total of successful payments, in dollars, across all of a customer's orders.
+NULL when the customer has no orders.
+{% enddocs %}
+```
+
+Add this to the end of the `columns:` list in `models/marts/marketing/marketing_schema.yml`:
+
+```yaml
+  - name: lifetime_value
+    description: '{{ doc("lifetime_value") }}'
+```
+
+```sh
+dbt docs generate --profiles-dir .
+dbt docs serve --profiles-dir .
+```
+
+Open `dim_customers` in the docs site (http://localhost:8080). The `lifetime_value` column shows your text. Press Ctrl+C to stop the server.
+</details>
+
+### Deployment
+
+The course deploys with dbt Cloud jobs. This repo uses a GitHub Action instead: `.github/workflows/dbt.yml` loads the raw data and runs `dbt build` on every pull request, so a broken model or failing test shows a red check before anyone merges.
+
+**Try it:** in your fork, add a step that checks source freshness after the build, and open a pull request to see it run.
+
+<details>
+<summary>Answer</summary>
+
+Add this step to the end of `.github/workflows/dbt.yml`:
+
+```yaml
+      - name: Source freshness
+        working-directory: oms_dbt_proj
+        run: dbt source freshness --profiles-dir .
+```
+
+The Action's run on your pull request shows a passing `Source freshness` step. Run `dbt source freshness --profiles-dir .` locally to see the same result.
+</details>
 
 ## DuckDB UI
 
@@ -128,6 +269,26 @@ dbt test --profiles-dir . -s fct_orders
 
 Check: 6 data tests pass.
 
+**Try it:** add a `not_null` test to `dim_customers.number_of_orders`.
+
+<details>
+<summary>Answer</summary>
+
+Add this to the end of the `columns:` list in `models/marts/marketing/marketing_schema.yml`:
+
+```yaml
+  - name: number_of_orders
+    tests:
+    - not_null
+```
+
+```sh
+dbt test --profiles-dir . -s dim_customers
+```
+
+`not_null_dim_customers_number_of_orders` passes. It passes even for customers with no orders, because `dim_customers` uses `coalesce(..., 0)`.
+</details>
+
 ### 2. Macros, Jinja and packages
 
 `macros/cents_to_dollars.sql` replaces the hand-written `amount / 100` in `stg_stripe__payments`. The `codegen` package (from `packages.yml`) writes model YAML for you.
@@ -138,6 +299,32 @@ dbt run-operation generate_model_yaml --profiles-dir . --args '{"model_names": [
 ```
 
 Check: `target/compiled/.../stg_stripe__payments.sql` contains `round(amount / 100, 2)`, and the second command prints a YAML block for `fct_orders`.
+
+**Try it:** after the Models exercise, move the `full_name` logic into a `full_name(first_name, last_name)` macro.
+
+<details>
+<summary>Answer</summary>
+
+Create `macros/full_name.sql`:
+
+```sql
+{% macro full_name(first_name, last_name) %}
+    {{ first_name }} || ' ' || {{ last_name }}
+{% endmacro %}
+```
+
+In `dim_customers.sql`, replace the `full_name` line with:
+
+```sql
+        {{ full_name('customers.first_name', 'customers.last_name') }} as full_name,
+```
+
+```sh
+dbt run --profiles-dir . -s dim_customers
+```
+
+`full_name` still shows `Michael P.`. The compiled SQL in `target/compiled/` shows the expanded expression.
+</details>
 
 ### 3. Unit tests and CI
 
@@ -150,6 +337,39 @@ dbt test --profiles-dir . -s test_type:unit
 Check: 1 unit test passes. Then change `case when status = 'success' then amount end` to `amount` in `fct_orders.sql` and run it again: it fails. Revert the change.
 
 `.github/workflows/dbt.yml` runs `dbt build` on DuckDB for every pull request, so forks get CI with no secrets.
+
+**Try it:** add a unit test proving a customer with no orders gets `number_of_orders = 0` and a null `lifetime_value`.
+
+<details>
+<summary>Answer</summary>
+
+Add this to the end of `models/marts/marketing/marketing_schema.yml`:
+
+```yaml
+unit_tests:
+- name: test_dim_customers_handles_customers_without_orders
+  model: dim_customers
+  given:
+  - input: ref('stg_jaffle_shop__customers')
+    rows:
+    - {customer_id: 1, first_name: Ann, last_name: A.}
+    - {customer_id: 2, first_name: Bob, last_name: B.}
+  - input: ref('fct_orders')
+    rows:
+    - {order_id: 10, customer_id: 1, amount: 5}
+    - {order_id: 11, customer_id: 1, amount: 3}
+  expect:
+    rows:
+    - {customer_id: 1, number_of_orders: 2, lifetime_value: 8}
+    - {customer_id: 2, number_of_orders: 0, lifetime_value: null}
+```
+
+```sh
+dbt test --profiles-dir . -s test_type:unit
+```
+
+2 unit tests pass. Columns you leave out of `rows` are null in the input and ignored in `expect`.
+</details>
 
 ### 4. Seeds, analyses and snapshots
 
@@ -167,6 +387,33 @@ dbt show --profiles-dir . --inline "select id, last_name, dbt_valid_from, dbt_va
 
 Check: customer 1 has two rows. The `P.` row has a `dbt_valid_to`, and the `Q.` row has none. Run `python duckdb/load_raw.py` from the repo root to reset the raw data.
 
+
+**Try it:** snapshot raw orders, tracking changes to `status` only, then change an order's status and snapshot again.
+
+<details>
+<summary>Answer</summary>
+
+Create `snapshots/snap_orders.yml`:
+
+```yaml
+snapshots:
+- name: snap_orders
+  relation: source('jaffle_shop', 'orders')
+  config:
+    unique_key: id
+    strategy: check
+    check_cols: ['status']
+```
+
+```sh
+dbt snapshot --profiles-dir . -s snap_orders
+python -c "import duckdb; duckdb.connect('../duckdb/raw.duckdb').execute(\"update jaffle_shop.orders set status = 'completed' where id = 1\")"
+dbt snapshot --profiles-dir . -s snap_orders
+dbt show --profiles-dir . --inline "select id, status, dbt_valid_from, dbt_valid_to from {{ ref('snap_orders') }} where id = 1"
+```
+
+Order 1 has a closed `returned` row and a current `completed` row. Run `python duckdb/load_raw.py` from the repo root to reset the raw data.
+</details>
 
 # common dbt Commands
 ## 1. Running and Building Models
