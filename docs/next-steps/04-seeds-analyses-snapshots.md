@@ -20,7 +20,8 @@ dbt show --profiles-dir . --inline "select id, last_name, dbt_valid_from, dbt_va
 
 Check: customer 1 has two rows. The `P.` row has a `dbt_valid_to`, and the `Q.` row has none. Run `python duckdb/load_raw.py` from the repo root to reset the raw data.
 
-Background: [Analyses and seeds](../notes/dbt-concepts.md#analyses-and-seeds).
+- **Seeds** suit small data that rarely changes, such as country codes or payment method labels. Load data that changes often with an EL tool instead.
+- **Analyses** suit one-off queries and audits: they get Jinja and `ref()`, and compile to plain SQL in `target/compiled/`.
 
 ## Try it
 

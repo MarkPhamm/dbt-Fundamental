@@ -16,12 +16,20 @@
   --lesson-pass: #2e7d32;
   --lesson-fail: #c62828;
 }
-[data-md-color-scheme="slate"] {
-  --md-accent-fg-color: #a78bfa;
-  --md-accent-fg-color--transparent: rgba(167, 139, 250, 0.1);
-  --md-typeset-a-color: #a78bfa;
-  --lesson-pass: #81c784;
-  --lesson-fail: #ef9a9a;
+/* White and violet only: hint and answer boxes use the violet, not Material's teal and green. */
+.md-typeset details.tip,
+.md-typeset details.success {
+  border-color: #7c3aed;
+}
+.md-typeset .tip > summary,
+.md-typeset .success > summary {
+  background-color: rgba(124, 58, 237, 0.1);
+}
+.md-typeset .tip > summary::before,
+.md-typeset .success > summary::before,
+.md-typeset .tip > summary::after,
+.md-typeset .success > summary::after {
+  background-color: #7c3aed;
 }
 .md-typeset h1,
 .md-typeset h2,

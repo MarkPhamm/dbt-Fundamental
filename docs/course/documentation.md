@@ -12,7 +12,25 @@ Descriptions in `*_schema.yml` become the docs site. Longer text lives in `{% do
 
 The same descriptions show up in the [ERD](../tools/qdbd.md) that qdbd builds from `dbt docs generate` output.
 
-Background: [Documentation](../notes/dbt-concepts.md#documentation).
+## Learn
+
+Docs kept in a separate tool fall behind the code. dbt keeps them next to it:
+
+- Every model, source and column can have a `description:` in its YAML file.
+- For longer text with tables or lists, write a **doc block** in a `.md` file and point to it with `doc()`:
+
+```
+{% docs order_status %}
+One of the following values: placed, shipped, completed, return pending, returned.
+{% enddocs %}
+```
+
+```yaml
+      - name: status
+        description: '{{ doc("order_status") }}'
+```
+
+`dbt docs generate` builds a website from all of it: descriptions, the tests on each column, each model's SQL, and the lineage graph. `dbt docs serve` opens it.
 
 ## Quiz
 

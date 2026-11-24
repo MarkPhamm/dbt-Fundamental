@@ -10,7 +10,31 @@
 |---|---|
 | `models/staging/*/*_source.yml` | `dbt source freshness --profiles-dir .` |
 
-Background: [Sources](../notes/dbt-concepts.md#sources).
+## Learn
+
+You could write `raw.jaffle_shop.orders` straight into a model. Declaring it as a **source** instead:
+
+- names all of a source's tables in one place, so a moved schema is a one-line fix,
+- puts the raw tables in the DAG and the docs, as the starting points,
+- lets `dbt source freshness` check how old the data is.
+
+Trimmed from `models/staging/jaffle_shop/stg_jaffle_shop_source.yml`:
+
+```yaml
+sources:
+  - name: jaffle_shop
+    database: raw
+    schema: jaffle_shop
+    tables:
+      - name: customers
+      - name: orders
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+```
+
+`{{ source('jaffle_shop', 'orders') }}` compiles to `raw.jaffle_shop.orders`. **Freshness** compares the newest `_etl_loaded_at` with now: older than 12 hours warns, older than 24 hours errors. See the [source properties docs](https://docs.getdbt.com/reference/source-properties).
 
 ## Run it in the browser
 

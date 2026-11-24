@@ -10,7 +10,14 @@ The course deploys with dbt Cloud jobs. This repo uses a GitHub Action instead: 
 |---|---|
 | `.github/workflows/dbt.yml` | runs on every pull request |
 
-Background: [Development vs. deployment](../notes/dbt-concepts.md#development-vs-deployment).
+## Learn
+
+- **Development:** you change the project on a branch (for example `feature/customers-model`) and build into your own schema (for example `dbt_jsmith`), so you never touch what others use.
+- **Deployment:** dbt runs on a schedule from `main` into a production schema (for example `dbt_prod`), and dashboards read from there. Production gets its own schema and, ideally, its own warehouse account.
+
+In dbt Cloud you set this up on two pages. **Environments** picks the dbt version, branch and credentials. **Jobs** runs commands such as `dbt build` on a schedule or with **Run Now**, and keeps each run's logs and docs.
+
+This repo uses a GitHub Action instead, so every pull request is checked before it reaches `main`.
 
 ## Quiz
 
