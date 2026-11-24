@@ -1,13 +1,38 @@
 /* Lesson widgets: SQL playground, quizzes, progress. Colors come from Material's theme variables,
    so light and dark mode both work. */
 
+/* Violet matches the drawings' highlighter (the AE Handbook Substack theme). */
+@font-face {
+  font-family: "Architects Daughter";
+  src: url("../assets/fonts/architects-daughter-latin-400-normal.woff2") format("woff2");
+  font-display: swap;
+}
 :root {
+  --md-primary-fg-color: #7c3aed;
+  --md-primary-fg-color--light: #a78bfa;
+  --md-primary-fg-color--dark: #5b21b6;
+  --md-accent-fg-color: #7c3aed;
+  --md-accent-fg-color--transparent: rgba(124, 58, 237, 0.1);
   --lesson-pass: #2e7d32;
   --lesson-fail: #c62828;
 }
 [data-md-color-scheme="slate"] {
+  --md-accent-fg-color: #a78bfa;
+  --md-accent-fg-color--transparent: rgba(167, 139, 250, 0.1);
+  --md-typeset-a-color: #a78bfa;
   --lesson-pass: #81c784;
   --lesson-fail: #ef9a9a;
+}
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-header__title,
+.md-nav__title {
+  font-family: "Architects Daughter", var(--md-text-font-family), sans-serif;
+  font-weight: 400;
+}
+.md-typeset h1 {
+  color: var(--md-default-fg-color);
 }
 
 /* ---------- SQL playground ---------- */

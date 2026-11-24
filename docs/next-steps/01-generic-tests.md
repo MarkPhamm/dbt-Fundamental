@@ -2,6 +2,8 @@
 
 [Next steps](../index.md#next-steps-after-fundamentals) · Next: [2. Macros, Jinja and packages](02-macros-and-packages.md)
 
+![fct_orders and its 6 data tests](../assets/drawings/next-generic-tests.png)
+
 Run the commands from `oms_dbt_proj`, after a first `dbt build --profiles-dir .`.
 
 `models/marts/finance/finance_schema.yml` declares `unique`, `not_null` and `relationships` tests on `fct_orders`. A schema file only counts if it ends in `.yml`.

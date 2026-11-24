@@ -2,6 +2,8 @@
 
 [Tools](../index.md#tools)
 
+![analytics.analytics.dim_customers: database, schema, table](../assets/drawings/duckdb-ui.png)
+
 After a local DuckDB build, launch the UI from the repo root to query models in the browser:
 
 ```sh

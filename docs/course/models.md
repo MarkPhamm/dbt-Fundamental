@@ -8,16 +8,7 @@ Staging models rename raw columns; marts join them with `ref()`. `dim_customers`
 |---|---|
 | `models/staging/`, `models/marts/` | `dbt run --profiles-dir .` |
 
-```mermaid
-flowchart LR
-  src_orders[(jaffle_shop.orders)] --> stg_orders[stg_jaffle_shop__orders]
-  src_customers[(jaffle_shop.customers)] --> stg_customers[stg_jaffle_shop__customers]
-  src_payment[(stripe.payment)] --> stg_payments[stg_stripe__payments]
-  stg_orders --> fct_orders
-  stg_payments --> fct_orders
-  fct_orders --> dim_customers
-  stg_customers --> dim_customers
-```
+![The jaffle_shop DAG: sources, staging models, fct_orders and dim_customers](../assets/drawings/concept-dag.png)
 
 To trace lineage inside one model, CTE by CTE, use [QLineage](../tools/qlineage.md). To see every table and how the keys join, open the [ERD](../tools/qdbd.md).
 

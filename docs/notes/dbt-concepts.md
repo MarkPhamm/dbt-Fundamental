@@ -24,7 +24,7 @@ Course notes from dbt Fundamentals. Each [course module](../index.md#follow-the-
 
 dbt transforms data inside a data warehouse. It is the "T" in ELT (extract, load, transform). Warehouses include Snowflake, Redshift, BigQuery and Databricks.
 
-![dbt in the data stack](https://github.com/user-attachments/assets/0401c149-0110-484e-b356-c18d2afe4fd0)
+![dbt in the data stack](../assets/drawings/concept-elt.png)
 
 Why teams choose dbt:
 
@@ -43,7 +43,7 @@ A dbt project has four building blocks:
 
 `ref()` links models together, and dbt draws those links as a DAG (directed acyclic graph). The DAG sets the build order and shows lineage.
 
-![Sources, models and tests in the lineage graph](https://github.com/user-attachments/assets/1d65c819-8599-4e12-9db4-a2d3a2d36167)
+![Sources, models and tests in the lineage graph](../assets/drawings/concept-lineage.png)
 
 ## ETL vs ELT
 
@@ -68,7 +68,7 @@ A modern team adds a role in the middle:
 - **Analytics engineer:** transforms raw data into clean, tested models up to the BI layer (T). This is the dbt role.
 - **Data analyst:** builds insights and dashboards on the transformed data.
 
-![Traditional vs modern data team](https://github.com/user-attachments/assets/7abae7ab-98be-40e9-b899-8fc9bedb09db)
+![Traditional vs modern data team](../assets/drawings/concept-team.png)
 
 At a small company one person may hold all three roles. As the team grows, the lines stay blurry.
 
@@ -80,7 +80,7 @@ At a small company one person may hold all three roles. As the team grows, the l
 - **Transform:** dbt, with tests, docs and lineage.
 - **Consumers:** BI tools (Tableau, Looker, Mode), machine learning notebooks, and operational analytics.
 
-![The modern data stack with dbt](https://github.com/user-attachments/assets/bff5df8a-7b15-457f-a423-f2cd4194c86f)
+![The modern data stack with dbt](../assets/drawings/concept-stack.png)
 
 ## Models
 
@@ -96,7 +96,7 @@ A model is a `.sql` file in `models/` that holds one `select` statement. You wri
 - If the object already exists, dbt replaces it. On BigQuery you may need `dbt run --full-refresh` to switch a view to a table.
 - The SQL dbt runs is in `target/run/`, and in the logs.
 
-![A model and the SQL dbt runs for it](https://github.com/user-attachments/assets/3c557974-1639-4a6d-8162-b4acb483521e)
+![A model and the SQL dbt runs for it](../assets/drawings/concept-model-sql.png)
 
 ## Modularity and ref
 
@@ -107,7 +107,7 @@ You could write `dim_customers` as one big query. Modularity splits it into step
 - `{{ ref('stg_jaffle_shop__customers') }}` compiles to the full name of that model in the current target.
 - dbt reads every `ref()` to build the DAG, so models always build in the right order.
 
-![ref() builds the DAG](https://github.com/user-attachments/assets/c461d5be-0352-4693-9344-a39656e93a2a)
+![ref() builds the DAG](../assets/drawings/concept-dag.png)
 
 ## Naming and project layout
 
@@ -122,7 +122,7 @@ You could write `dim_customers` as one big query. Modularity splits it into step
 - **`models/staging/`** holds staging models and source YAML, with a subfolder per source (`jaffle_shop`, `stripe`).
 - **`models/marts/`** holds intermediate, fact and dimension models, with a subfolder per business area (`finance`, `marketing`).
 
-![Project layout: staging and marts](https://github.com/user-attachments/assets/e14b976f-6524-47ea-81e5-ec497b7b1368)
+![Project layout: staging and marts](../assets/drawings/concept-layout.png)
 
 ## dbt_project.yml
 

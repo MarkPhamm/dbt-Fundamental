@@ -2,6 +2,8 @@
 
 [Next steps](../index.md#next-steps-after-fundamentals) · Previous: [2. Macros, Jinja and packages](02-macros-and-packages.md) · Next: [4. Seeds, analyses and snapshots](04-seeds-analyses-snapshots.md)
 
+![Unit test: given payment rows, expected fct_orders rows](../assets/drawings/next-unit-tests.png)
+
 Run the commands from `oms_dbt_proj`, after a first `dbt build --profiles-dir .`.
 
 Data tests check the data you have. Unit tests check the logic against rows you write. `test_fct_orders_counts_only_successful_payments` in `finance_schema.yml` proves failed payments are ignored.

@@ -2,6 +2,8 @@
 
 [Course map](../index.md#follow-the-dbt-fundamentals-course) · Previous: [Sources](sources.md) · Next: [Documentation](documentation.md)
 
+![A test is a query for the bad rows: 0 rows means pass](../assets/drawings/course-tests.png)
+
 Generic tests (`unique`, `not_null`, `accepted_values`, `relationships`) live in the `*_schema.yml` files. Singular tests are SQL files in `tests/` that return the rows that break a rule.
 
 Course videos may show `accepted_values` and `relationships` options directly under the test name. dbt 1.10+ expects them under `arguments:`, as this project does.

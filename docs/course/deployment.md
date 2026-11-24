@@ -2,6 +2,8 @@
 
 [Course map](../index.md#follow-the-dbt-fundamentals-course) · Previous: [Documentation](documentation.md) · Next: [Next steps after Fundamentals](../index.md#next-steps-after-fundamentals)
 
+![Every pull request runs load_raw.py, dbt deps and dbt build](../assets/drawings/course-deployment.png)
+
 The course deploys with dbt Cloud jobs. This repo uses a GitHub Action instead: `.github/workflows/dbt.yml` loads the raw data and runs `dbt build` on every pull request, so a broken model or failing test shows a red check before anyone merges.
 
 | Open | Run |
