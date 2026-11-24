@@ -22,6 +22,16 @@ dbt build --profiles-dir . --target snowflake
 
 Setup details are in `oms_dbt_proj/README.md`.
 
+## Start here
+
+Never heard of analytics engineering or dbt? Begin with these five short lessons. They need only a little SQL.
+
+1. [What is analytics engineering?](docs/start/01-analytics-engineering.md)
+2. [ELT and where dbt fits](docs/start/02-elt-and-dbt.md)
+3. [Meet the data](docs/start/03-meet-the-data.md)
+4. [How dbt builds tables](docs/start/04-how-dbt-builds.md)
+5. [Set up the project](docs/start/05-set-up.md)
+
 ## Follow the dbt Fundamentals course
 
 Use this project alongside dbt Learn's free [dbt Fundamentals](https://learn.getdbt.com/courses/dbt-fundamentals) course. The course uses the same jaffle_shop data, so each module maps to files you can open and run here. Run `dbt build --profiles-dir .` once from `oms_dbt_proj` first.
@@ -66,5 +76,4 @@ To query the built models in a browser, use the [DuckDB UI](docs/tools/duckdb-ui
 
 ## Reference
 
-- [dbt concepts](docs/notes/dbt-concepts.md): course notes, from ELT and the modern data stack to state.
 - [Common dbt commands](docs/notes/commands.md): cheatsheet.

@@ -9,20 +9,9 @@ docs_dir: docs
 theme:
   name: material
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: custom
-      accent: custom
-      toggle:
-        icon: material/weather-night
-        name: Dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: custom
-      accent: custom
-      toggle:
-        icon: material/weather-sunny
-        name: Light mode
+    scheme: default
+    primary: custom
+    accent: custom
   features:
     - navigation.instant
     - navigation.tracking
@@ -59,6 +48,12 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Start here:
+      - 1. What is analytics engineering?: start/01-analytics-engineering.md
+      - 2. ELT and where dbt fits: start/02-elt-and-dbt.md
+      - 3. Meet the data: start/03-meet-the-data.md
+      - 4. How dbt builds tables: start/04-how-dbt-builds.md
+      - 5. Set up the project: start/05-set-up.md
   - Course:
       - Models: course/models.md
       - Sources: course/sources.md
@@ -77,5 +72,4 @@ nav:
       - DuckDB UI: tools/duckdb-ui.md
   - SQL playground: playground.md
   - Reference:
-      - dbt concepts: notes/dbt-concepts.md
       - Common dbt commands: notes/commands.md

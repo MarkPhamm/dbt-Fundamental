@@ -1,6 +1,6 @@
 # Models
 
-[Course map](../index.md#follow-the-dbt-fundamentals-course) · Next: [Sources](sources.md)
+[Course map](../index.md#follow-the-dbt-fundamentals-course) · Previous: [5. Set up the project](../start/05-set-up.md) · Next: [Sources](sources.md)
 
 Staging models rename raw columns; marts join them with `ref()`. `dim_customers` builds on `fct_orders`, which builds on two staging models.
 
@@ -12,7 +12,13 @@ Staging models rename raw columns; marts join them with `ref()`. `dim_customers`
 
 To trace lineage inside one model, CTE by CTE, use [QLineage](../tools/qlineage.md). To see every table and how the keys join, open the [ERD](../tools/qdbd.md).
 
-Background: [Models](../notes/dbt-concepts.md#models), [Modularity and ref](../notes/dbt-concepts.md#modularity-and-ref), [Naming and project layout](../notes/dbt-concepts.md#naming-and-project-layout).
+New to models, `ref()` or the DAG? Read [4. How dbt builds tables](../start/04-how-dbt-builds.md) first.
+
+## Learn
+
+- A model is one `select` in a `.sql` file. dbt builds it as a view or a table: `dbt_project.yml` sets that per folder, and `{{ config(materialized='table') }}` at the top of a model overrides it.
+- If the view or table already exists, dbt replaces it. The exact SQL dbt ran is in `target/run/`.
+- `models/staging/` holds one cleaning model per raw table. `models/marts/` holds the business tables, `fct_orders` and `dim_customers`, built only with `ref()`.
 
 ## Run it in the browser
 

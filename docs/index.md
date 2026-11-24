@@ -2,9 +2,9 @@
 
 ![One dbt project, two warehouses: the jaffle_shop DAG from staging to dim_customers](assets/drawings/cover.png)
 
-Use this site alongside dbt Learn's free [dbt Fundamentals](https://learn.getdbt.com/courses/dbt-fundamentals) course. The course uses the same jaffle_shop data, so each module maps to files you can open and run in [this repo](https://github.com/MarkPhamm/dbt-Fundamental).
+Learn dbt from zero. No analytics engineering background needed, only a little SQL. Every lesson uses the same coffee-shop data, jaffle_shop, and the same dbt project in [this repo](https://github.com/MarkPhamm/dbt-Fundamental).
 
-Each lesson has three things to do:
+Each lesson mixes three things:
 
 - **Run SQL in your browser.** The playgrounds load the raw jaffle_shop data into DuckDB inside the page. No install, no login.
 - **Take the quiz.** Pick an answer and get instant feedback.
@@ -14,25 +14,21 @@ Your progress is saved in this browser.
 
 <div class="progress-overall"></div>
 
-## Set up the project
+## Start here
 
-The quizzes and playgrounds need nothing. The exercises need the dbt project:
+New to analytics engineering? Read these five in order. They take about an hour and need nothing installed until lesson 5.
 
-- **Codespaces:** [open the repo in Codespaces](https://codespaces.new/MarkPhamm/dbt-Fundamental?quickstart=1). Python, dependencies and raw data are installed for you.
-- **Local:** Python 3.11+. From the repo root:
-
-```sh
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python duckdb/load_raw.py
-cd oms_dbt_proj
-dbt deps --profiles-dir .
-dbt build --profiles-dir .
-```
-
-Check: the build ends with `Done. PASS=39`.
+| Lesson | You learn | Progress |
+|---|---|---|
+| [1. What is analytics engineering?](start/01-analytics-engineering.md) | the problem dbt solves, and who does what on a data team | <span data-progress></span> |
+| [2. ELT and where dbt fits](start/02-elt-and-dbt.md) | ETL vs ELT, and what dbt is | <span data-progress></span> |
+| [3. Meet the data](start/03-meet-the-data.md) | the jaffle_shop tables, and sources, models, tests and docs | <span data-progress></span> |
+| [4. How dbt builds tables](start/04-how-dbt-builds.md) | models, `ref()`, the DAG, `dbt build` | <span data-progress></span> |
+| [5. Set up the project](start/05-set-up.md) | the project layout, then your first `dbt build` | <span data-progress></span> |
 
 ## Follow the dbt Fundamentals course
+
+Now follow dbt Learn's free [dbt Fundamentals](https://learn.getdbt.com/courses/dbt-fundamentals) course alongside the project. It uses the same jaffle_shop data, so each module maps to files you can open and run.
 
 | Module | Open | Run | Progress |
 |---|---|---|---|

@@ -33,6 +33,16 @@ order by order_id
 
 `.github/workflows/dbt.yml` runs `dbt build` on DuckDB for every pull request, so forks get CI with no secrets.
 
+## Build only what changed
+
+Each run writes **artifacts** to `target/`: `manifest.json` (every model, source and test) and `run_results.json` (what happened). Compare against production's artifacts to build only what a branch changed, plus everything downstream:
+
+```sh
+dbt build --profiles-dir . --select state:modified+ --state path/to/prod-artifacts
+```
+
+`dbt retry` re-runs only what failed last time.
+
 ## Try it
 
 Add a unit test proving a customer with no orders gets `number_of_orders = 0` and a null `lifetime_value`.

@@ -12,7 +12,30 @@ Course videos may show `accepted_values` and `relationships` options directly un
 |---|---|
 | `models/**/*_schema.yml`, `tests/` | `dbt test --profiles-dir .` |
 
-Background: [Testing](../notes/dbt-concepts.md#testing), [dbt build](../notes/dbt-concepts.md#dbt-build).
+## Learn
+
+A test is a `select` that returns the rows that break a rule. Zero rows means it passes. There are three kinds:
+
+- **Generic tests:** reusable, declared on a column in YAML. dbt ships four:
+
+| Test | Checks |
+|---|---|
+| `unique` | every value in the column is unique |
+| `not_null` | no value is null |
+| `accepted_values` | every value is in a given list |
+| `relationships` | every value exists in another model's column |
+
+- **Singular tests:** one-off SQL files in `tests/`, for rules no generic test covers.
+- **Unit tests:** check a model's logic against rows you write. See [chapter 3](../next-steps/03-unit-tests-and-ci.md).
+
+```sh
+dbt test --profiles-dir .                              # every test
+dbt test --profiles-dir . --select test_type:generic   # generic only
+dbt test --profiles-dir . --select test_type:singular  # singular only
+dbt test --profiles-dir . --select dim_customers       # one model's tests
+```
+
+`dbt build` runs each model's tests right after building it and skips everything downstream of a failure, so bad data never spreads.
 
 ## Run it in the browser
 
