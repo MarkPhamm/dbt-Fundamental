@@ -2,6 +2,8 @@
 
 [Tools](../index.md#tools) · Also: [qdbd ERD](qdbd.md) · [CTE Diff](cte-diff.md)
 
+![QLineage: lifetime_value traced back to stripe.payment.amount](../assets/drawings/tool-qlineage.png)
+
 [`qlineage-cli`](https://pypi.org/project/qlineage-cli/) reads lineage out of this project without connecting to a warehouse. It parses SQL locally with SQLGlot and picks up `target/manifest.json` when it exists, so it works against the DuckDB target, the Snowflake target, or no target at all.
 
 It is already in `requirements.txt`:
@@ -28,7 +30,7 @@ qlineage --model dim_customers --dbt-graph --format tree
 qlineage models/marts/marketing/dim_customers.sql --column lifetime_value --format tree
 ```
 
-![qlineage tree output in the terminal](../assets/qlineage/cli-tree.png)
+![qlineage --dbt-graph tree for dim_customers](../assets/drawings/qlineage-tree.png)
 
 Passing a file path instead of `--model` shows the CTE structure inside that one model rather than the project DAG.
 
@@ -42,7 +44,7 @@ Passing a SQL file with no `--format` starts a local server on `127.0.0.1` and o
 qlineage models/marts/marketing/dim_customers.sql
 ```
 
-![QLineage browser workspace showing the dim_customers graph](../assets/qlineage/ui-workspace.png)
+![QLineage browser workspace: SQL pane, CTE graph and inspector](../assets/drawings/qlineage-workspace.png)
 
 The left pane holds the compiled SQL and re-parses when you edit and press Visualize. The canvas pans and zooms. The inspector on the right reports parse status, node and edge counts, output columns, and the sources feeding the model; selecting a node drills into its columns and join keys. The workspace also exports SVG, PNG, and JSON. Press Ctrl+C in the terminal to stop the server.
 
@@ -56,7 +58,7 @@ Use `qlineage ui` for a blank workspace to paste ad-hoc SQL into, and `--port` i
 qlineage models/marts/marketing/dim_customers.sql --format mermaid
 ```
 
-![Mermaid render of the dim_customers lineage](../assets/qlineage/lineage-mermaid.png)
+![Mermaid render of the dim_customers CTE lineage](../assets/drawings/qlineage-mermaid.png)
 
 GitHub renders a fenced ` ```mermaid ` block natively. For the same preview inside Cursor or VS Code, install the `bierner.markdown-mermaid` extension and open the preview with Cmd+Shift+V. To turn a diagram into an image file instead:
 

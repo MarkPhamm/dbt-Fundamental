@@ -1,6 +1,6 @@
 # dbt Fundamentals
 
-![Demo: one dbt project, two warehouses, and lineage traced with zero warehouse connection](docs/assets/brag.gif)
+![One dbt project, two warehouses: the jaffle_shop DAG from staging to dim_customers](docs/assets/drawings/cover.png)
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/MarkPhamm/dbt-Fundamental?quickstart=1)
 
@@ -51,9 +51,9 @@ Three tools to see what a dbt project does. QLineage and qdbd only read files an
 
 <table>
 <tr>
-<td width="33%"><a href="docs/tools/qlineage.md"><img src="docs/assets/qlineage/ui-workspace.png" alt="QLineage browser workspace"></a></td>
-<td width="33%"><a href="docs/tools/qdbd.md"><img src="docs/assets/qdbd/erd.png" alt="qdbd ERD of jaffle_shop"></a></td>
-<td width="33%"><a href="docs/tools/cte-diff.md"><img src="docs/assets/cte-diff/compare-branch.jpg" alt="CTE Diff lenses in a git diff"></a></td>
+<td width="33%"><a href="docs/tools/qlineage.md"><img src="docs/assets/drawings/tool-qlineage.png" alt="QLineage: lifetime_value traced back to stripe.payment.amount"></a></td>
+<td width="33%"><a href="docs/tools/qdbd.md"><img src="docs/assets/drawings/tool-qdbd.png" alt="qdbd: how the staging tables join"></a></td>
+<td width="33%"><a href="docs/tools/cte-diff.md"><img src="docs/assets/drawings/tool-cte-diff.png" alt="CTE Diff: the rows a change touches in order_payments"></a></td>
 </tr>
 <tr>
 <td><a href="docs/tools/qlineage.md"><b>QLineage</b></a>: how data flows, model to model and column by column.</td>

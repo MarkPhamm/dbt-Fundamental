@@ -6,7 +6,7 @@
 
 Queries go through `dbt show`, so Jinja, `ref()` and the profile behave as in a real run. On this project that means the DuckDB target, with no login.
 
-![CTE Diff lenses above each CTE in a git diff: Preview and Compare sides](../assets/cte-diff/compare-branch.jpg)
+![CTE Diff: the rows a change touches in order_payments](../assets/drawings/tool-cte-diff.png)
 
 ## Set it up
 
@@ -23,7 +23,7 @@ Open `models/marts/finance/fct_orders.sql`. Every CTE gets a **▶ Preview** len
 
 ## Compare a change
 
-![CTE Diff sidebar: pick two files and open the diff](../assets/cte-diff/compare-files.jpg)
+![Three ways into a comparison: branch, files, or pasted queries](../assets/drawings/cte-diff-ways.png)
 
 There are three ways to get two versions side by side:
 

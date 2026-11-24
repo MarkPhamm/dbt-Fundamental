@@ -2,6 +2,8 @@
 
 [Next steps](../index.md#next-steps-after-fundamentals) · Previous: [3. Unit tests and CI](03-unit-tests-and-ci.md)
 
+![Snapshot keeps the old row: customer 1 P. then Q.](../assets/drawings/next-snapshots.png)
+
 Run the commands from `oms_dbt_proj`, after a first `dbt build --profiles-dir .`.
 
 - `seeds/payment_methods.csv` is small reference data that lives in git and loads with `dbt seed`.

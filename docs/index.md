@@ -1,5 +1,7 @@
 # dbt Fundamentals, hands on
 
+![One dbt project, two warehouses: the jaffle_shop DAG from staging to dim_customers](assets/drawings/cover.png)
+
 Use this site alongside dbt Learn's free [dbt Fundamentals](https://learn.getdbt.com/courses/dbt-fundamentals) course. The course uses the same jaffle_shop data, so each module maps to files you can open and run in [this repo](https://github.com/MarkPhamm/dbt-Fundamental).
 
 Each lesson has three things to do:
@@ -54,6 +56,16 @@ Four short chapters, in the order dbt Learn teaches them. Each one runs offline 
 | [4. Seeds, analyses and snapshots](next-steps/04-seeds-analyses-snapshots.md) | <span data-progress></span> |
 
 ## Tools
+
+<div class="grid" markdown>
+
+[![QLineage: lifetime_value traced back to stripe.payment.amount](assets/drawings/tool-qlineage.png)](tools/qlineage.md)
+
+[![qdbd: how the staging tables join](assets/drawings/tool-qdbd.png)](tools/qdbd.md)
+
+[![CTE Diff: the rows a change touches in order_payments](assets/drawings/tool-cte-diff.png)](tools/cte-diff.md)
+
+</div>
 
 | Tool | What it shows | Progress |
 |---|---|---|

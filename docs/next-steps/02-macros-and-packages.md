@@ -2,6 +2,8 @@
 
 [Next steps](../index.md#next-steps-after-fundamentals) · Previous: [1. Generic tests on a mart](01-generic-tests.md) · Next: [3. Unit tests and CI](03-unit-tests-and-ci.md)
 
+![cents_to_dollars compiles to round(amount / 100, 2)](../assets/drawings/next-macros.png)
+
 Run the commands from `oms_dbt_proj`, after a first `dbt build --profiles-dir .`.
 
 `macros/cents_to_dollars.sql` replaces the hand-written `amount / 100` in `stg_stripe__payments`. The `codegen` package (from `packages.yml`) writes model YAML for you.

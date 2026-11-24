@@ -2,6 +2,8 @@
 
 [Course map](../index.md#follow-the-dbt-fundamentals-course) · Previous: [Models](models.md) · Next: [Tests](tests.md)
 
+![Freshness timeline: orders 13 hours old lands between warn_after and error_after](../assets/drawings/course-sources.png)
+
 `{{ source('jaffle_shop', 'orders') }}` points at a raw table declared in `stg_jaffle_shop_source.yml`. That file also sets freshness rules on `_etl_loaded_at`, the time `load_raw.py` loaded the data.
 
 | Open | Run (from `oms_dbt_proj`) |

@@ -1,5 +1,7 @@
 # SQL playground
 
+![SQL in the browser over the three raw tables](assets/drawings/playground.png)
+
 Query the jaffle_shop raw data in your browser. The page loads the same CSVs with the same script as `python duckdb/load_raw.py`, so the tables match `duckdb/raw.duckdb`.
 
 | Table | Rows | dbt reads it with |

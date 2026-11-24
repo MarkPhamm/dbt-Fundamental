@@ -2,6 +2,8 @@
 
 [Course map](../index.md#follow-the-dbt-fundamentals-course) · Previous: [Tests](tests.md) · Next: [Deployment](deployment.md)
 
+![A doc block in the yml becomes the docs site](../assets/drawings/course-documentation.png)
+
 Descriptions in `*_schema.yml` become the docs site. Longer text lives in `{% docs %}` blocks in `*_doc.md` files, used with `'{{ doc("name") }}'`. See `order_status` in `stg_jaffle_shop_doc.md`.
 
 | Open | Run (from `oms_dbt_proj`) |
