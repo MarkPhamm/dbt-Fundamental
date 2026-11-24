@@ -4,3 +4,6 @@
 *.duckdb
 *.duckdb.wal
 /brag-output
+/oms_dbt_proj/erd
+/site
+__pycache__/

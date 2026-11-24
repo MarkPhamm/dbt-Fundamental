@@ -12,7 +12,7 @@ dbt build --profiles-dir . --target snowflake
 
 ## Local DuckDB
 
-Requires Python 3.10+. From the repo root:
+Requires Python 3.11+. From the repo root:
 
 ```sh
 python -m venv .venv

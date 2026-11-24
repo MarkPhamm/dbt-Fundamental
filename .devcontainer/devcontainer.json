@@ -10,7 +10,7 @@
   },
   "customizations": {
     "vscode": {
-      "extensions": ["ms-python.python"],
+      "extensions": ["ms-python.python", "MarkPhamm.cte-diff"],
       "settings": { "terminal.integrated.cwd": "${containerWorkspaceFolder}/oms_dbt_proj" }
     }
   }

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A dbt-fundamentals learning repo: the jaffle_shop tutorial project (`oms_dbt_proj/`, dbt project name `jaffle_shop`) that runs against two targets from one `oms_dbt_proj/profiles.yml`. DuckDB is the default and needs no login; Snowflake uses the same models and sources. Most of the root `README.md` below "common dbt Commands" is course notes, not project docs.
+A dbt-fundamentals learning repo: the jaffle_shop tutorial project (`oms_dbt_proj/`, dbt project name `jaffle_shop`) that runs against two targets from one `oms_dbt_proj/profiles.yml`. DuckDB is the default and needs no login; Snowflake uses the same models and sources. The root `README.md` is a short landing page; learner docs live in `docs/` (`course/`, `next-steps/`, `tools/`, `notes/`), with images in `docs/assets/`.
 
 ## Commands
 
@@ -23,7 +23,10 @@ dbt test  --profiles-dir . -s assert_positive_total_for_payments  # one singular
 dbt test  --profiles-dir . -s test_type:unit       # unit tests only
 dbt source freshness --profiles-dir .
 python ../duckdb/ui.py                             # browser UI on :4213 over analytics.duckdb
+dbt docs generate --profiles-dir . && qdbd import dbt target/ -o erd/ --infer-fks  # ERD into gitignored erd/
 ```
+
+Lesson site (repo root, `pip install -r requirements-docs.txt`): `mkdocs serve` to preview, `mkdocs build --strict` to check. `.github/workflows/pages.yml` builds it on every PR and deploys `main` to GitHub Pages.
 
 There is no linter. CI (`.github/workflows/dbt.yml`) runs `load_raw.py` then `dbt build` on DuckDB for every PR and push to main.
 
@@ -34,13 +37,14 @@ There is no linter. CI (`.github/workflows/dbt.yml`) runs `load_raw.py` then `db
 - **Layers:** `models/staging/<source>/` holds `stg_<source>__<entity>` views (rename and cast only, one per source table, with `<dir>_source.yml`, `<dir>_schema.yml`, `<dir>_doc.md` beside them). `models/marts/<domain>/` holds tables (`fct_orders` in finance, `dim_customers` in marketing) built only from `ref()` to staging or other marts. Materializations are set per folder in `dbt_project.yml`.
 - **DAG:** `stg_jaffle_shop__orders` + `stg_stripe__payments` → `fct_orders` → `dim_customers` (+ `stg_jaffle_shop__customers`).
 - **Business rules:** payment `amount` is converted from cents to dollars in staging via the `cents_to_dollars` macro. `fct_orders.amount` sums only `status = 'success'` payments; a unit test in `finance_schema.yml` guards this.
-- **Learner path (root README):** the audience is beginners taking dbt Learn's Fundamentals course, and they read only the root README. Terms:
-  - **Module:** a dbt Fundamentals course unit (Models, Sources, Tests, Documentation, Deployment), one row of the "Follow the dbt Fundamentals course" map.
-  - **Chapter:** a numbered section of "Next steps after Fundamentals", covering material beyond the course.
-  - **Exercise:** a **Try it** task at the end of a module or chapter, with its answer in a `<details>` block. Exercises are not applied to the project. Apply each answer exactly as written and confirm its stated result before changing it.
-  Keep README commands and "Check:" lines true when changing the files they point to.
+- **Learner path (README + `docs/`):** the audience is beginners taking dbt Learn's Fundamentals course. The root README links out to one page per module, chapter and tool. Terms:
+  - **Module:** a dbt Fundamentals course unit (Models, Sources, Tests, Documentation, Deployment), one row of the "Follow the dbt Fundamentals course" map and one page in `docs/course/`.
+  - **Chapter:** a numbered page in `docs/next-steps/`, covering material beyond the course.
+  - **Exercise:** a **Try it** task at the end of a module or chapter, with a `<details class="tip" markdown>` Hint and a `<details class="success" markdown>` Answer. Exercises are not applied to the project. Apply each answer exactly as written and confirm its stated result before changing it.
+  Keep commands and "Check:" lines in the README and `docs/` true when changing the files they point to.
+- **Lesson site:** MkDocs Material renders `docs/` (nav in `mkdocs.yml`); `docs/index.md` is the site home and the pages' back-links target it. `docs/javascripts/lesson.js` upgrades plain markdown: `<div class="sql-playground" markdown>` around a ```sql block becomes a DuckDB-WASM editor (optional `data-expect-rows` check), `<div class="quiz" data-answer="N" markdown>` turns its list into choices (N is 1-based), and the Answer `<details>` gets a "Mark exercise done" button. Progress lives in the browser's localStorage. `mkdocs_hooks.py` serves `duckdb/raw_data.sql` and the CSVs at `data/`, and the playground runs that script, so playground tables match `raw.duckdb`. Keep playground checks and quiz answers true when changing data or models. Block HTML needs the `markdown` attribute or its contents stay unparsed.
 - **Codespaces:** `.devcontainer/devcontainer.json` installs requirements, loads raw data and runs `dbt deps`, but deliberately not `dbt build` (the learner's first step).
-- **Lineage:** `qlineage` (from `requirements.txt`) reads lineage offline. Run `dbt compile --profiles-dir .` first so it can use `target/manifest.json`. The root README covers its flags.
+- **Tools:** `docs/tools/` covers three. `qlineage` and `qdbd` (`quickdbd-cli`, Python 3.11+) come from `requirements.txt` and read files offline: qlineage needs `target/manifest.json` (`dbt compile`), qdbd's ERD import also wants `catalog.json` (`dbt docs generate`). CTE Diff is a VS Code extension (in the devcontainer) that runs `dbt show` on the DuckDB target, so it hits the same one-writer lock as `ui.py`.
 
 ## Gotchas
 
