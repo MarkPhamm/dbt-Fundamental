@@ -3,3 +3,4 @@ dbt-snowflake>=1.10,<2
 dbt-duckdb>=1.10,<2
 ipykernel
 qlineage-cli>=0.2,<1
+quickdbd-cli>=0.6,<1

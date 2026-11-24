@@ -1,0 +1,81 @@
+site_name: dbt Fundamentals
+site_description: Hands-on lessons for dbt Learn's Fundamentals course, on the jaffle_shop project. Run SQL in the browser, take the quizzes, track your progress.
+site_url: https://markphamm.github.io/dbt-Fundamental/
+repo_url: https://github.com/MarkPhamm/dbt-Fundamental
+repo_name: MarkPhamm/dbt-Fundamental
+edit_uri: edit/main/docs/
+docs_dir: docs
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.footer
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+
+# Copies duckdb/data/*.csv into the site for the SQL playground.
+hooks:
+  - mkdocs_hooks.py
+
+extra_css:
+  - stylesheets/lesson.css
+extra_javascript:
+  - javascripts/lesson.js
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Home: index.md
+  - Course:
+      - Models: course/models.md
+      - Sources: course/sources.md
+      - Tests: course/tests.md
+      - Documentation: course/documentation.md
+      - Deployment: course/deployment.md
+  - Next steps:
+      - 1. Generic tests on a mart: next-steps/01-generic-tests.md
+      - 2. Macros, Jinja and packages: next-steps/02-macros-and-packages.md
+      - 3. Unit tests and CI: next-steps/03-unit-tests-and-ci.md
+      - 4. Seeds, analyses and snapshots: next-steps/04-seeds-analyses-snapshots.md
+  - Tools:
+      - QLineage: tools/qlineage.md
+      - qdbd ERD: tools/qdbd.md
+      - CTE Diff: tools/cte-diff.md
+      - DuckDB UI: tools/duckdb-ui.md
+  - SQL playground: playground.md
+  - Reference:
+      - dbt concepts: notes/dbt-concepts.md
+      - Common dbt commands: notes/commands.md

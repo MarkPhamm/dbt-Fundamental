@@ -1,0 +1,219 @@
+/* Lesson widgets: SQL playground, quizzes, progress. Colors come from Material's theme variables,
+   so light and dark mode both work. */
+
+:root {
+  --lesson-pass: #2e7d32;
+  --lesson-fail: #c62828;
+}
+[data-md-color-scheme="slate"] {
+  --lesson-pass: #81c784;
+  --lesson-fail: #ef9a9a;
+}
+
+/* ---------- SQL playground ---------- */
+
+.md-typeset .sql-playground {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-left: 4px solid var(--md-accent-fg-color);
+  border-radius: 0.4rem;
+  padding: 0.8rem;
+  margin: 1.2em 0;
+}
+.md-typeset .sql-playground > p:first-child {
+  margin-top: 0;
+}
+.playground-editor {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--md-code-font-family);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  padding: 0.6rem 0.8rem;
+  color: var(--md-code-fg-color);
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.2rem;
+  resize: vertical;
+  tab-size: 4;
+}
+.playground-editor:focus {
+  outline: 2px solid var(--md-accent-fg-color);
+  outline-offset: 1px;
+}
+.playground-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+.md-typeset .playground-bar .md-button {
+  margin: 0;
+  padding: 0.3em 1.2em;
+  font-size: 0.7rem;
+}
+.md-typeset .playground-bar .md-button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.playground-hint {
+  font-size: 0.65rem;
+  color: var(--md-default-fg-color--light);
+}
+.md-typeset .playground-status {
+  font-size: 0.7rem;
+  margin: 0.6rem 0 0;
+  color: var(--md-default-fg-color--light);
+}
+.md-typeset .playground-status:empty {
+  display: none;
+}
+.md-typeset .playground-pass {
+  color: var(--lesson-pass);
+  font-weight: 700;
+}
+.md-typeset .playground-fail {
+  color: var(--lesson-fail);
+  font-weight: 700;
+}
+.playground-table {
+  max-height: 20rem;
+  overflow: auto;
+  margin-top: 0.4rem;
+}
+.md-typeset .playground-table table {
+  display: table;
+  margin: 0;
+  font-size: 0.65rem;
+}
+.md-typeset .playground-table th {
+  position: sticky;
+  top: 0;
+  background: var(--md-default-bg-color);
+}
+.md-typeset .playground-error {
+  margin: 0.4rem 0 0;
+  padding: 0.6rem;
+  white-space: pre-wrap;
+  color: var(--lesson-fail);
+  background: var(--md-code-bg-color);
+  border-radius: 0.2rem;
+  font-size: 0.7rem;
+}
+
+/* ---------- quiz ---------- */
+
+.md-typeset .quiz {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  padding: 0.4rem 1rem 0.8rem;
+  margin: 1.2em 0;
+}
+.md-typeset .quiz > ul,
+.md-typeset .quiz > ol {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+.md-typeset .quiz .quiz-option {
+  margin: 0.4rem 0;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: border-color 120ms, background-color 120ms;
+}
+.md-typeset .quiz .quiz-option:hover,
+.md-typeset .quiz .quiz-option:focus-visible {
+  border-color: var(--md-accent-fg-color);
+  outline: none;
+}
+.md-typeset .quiz .quiz-option.wrong {
+  border-color: var(--lesson-fail);
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+.md-typeset .quiz .quiz-option.correct {
+  border-color: var(--lesson-pass);
+  box-shadow: inset 4px 0 0 var(--lesson-pass);
+  font-weight: 600;
+}
+.md-typeset .quiz.solved .quiz-option:not(.correct) {
+  cursor: default;
+  opacity: 0.6;
+}
+/* Material gives details a display value, which beats the hidden attribute. */
+.md-typeset .quiz details[hidden] {
+  display: none;
+}
+.md-typeset .quiz-feedback {
+  margin: 0.2rem 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.md-typeset .quiz-feedback:empty {
+  display: none;
+}
+.md-typeset .quiz.solved .quiz-feedback {
+  color: var(--lesson-pass);
+}
+
+/* ---------- exercises and progress ---------- */
+
+.md-typeset .exercise-done {
+  margin-top: 0.8rem;
+}
+.progress-badge {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 0.65rem;
+  padding: 0.1em 0.6em;
+  border-radius: 1em;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color--light);
+}
+.progress-done {
+  border-color: var(--lesson-pass);
+  color: var(--lesson-pass);
+  font-weight: 700;
+}
+.progress-started {
+  border-color: var(--md-accent-fg-color);
+  color: var(--md-accent-fg-color);
+}
+.progress-track {
+  height: 0.6rem;
+  border-radius: 0.3rem;
+  background: var(--md-default-fg-color--lightest);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--md-accent-fg-color);
+  transition: width 300ms;
+}
+.md-typeset .progress-overall p {
+  font-size: 0.75rem;
+  margin: 0.4rem 0 0;
+}
+.md-typeset .progress-reset {
+  margin-left: 0.6rem;
+  font-size: 0.65rem;
+  color: var(--md-default-fg-color--light);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.md-nav__link.lesson-done::after {
+  content: "✓";
+  margin-left: 0.4em;
+  color: var(--lesson-pass);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .quiz .quiz-option,
+  .progress-fill {
+    transition: none;
+  }
+}
